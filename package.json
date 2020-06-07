@@ -1,0 +1,19 @@
+{
+  "name": "javascript-bloackchain-3hr",
+  "version": "1.0.0",
+  "description": "Practice",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FigueroaR/Javascript-Bloackchain-3hr.git"
+  },
+  "author": "R.F.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FigueroaR/Javascript-Bloackchain-3hr/issues"
+  },
+  "homepage": "https://github.com/FigueroaR/Javascript-Bloackchain-3hr#readme"
+}
