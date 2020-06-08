@@ -4,18 +4,32 @@ let Transaction = require('./transaction')
 
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+
+let transactions = []
+
+//body
+app.use(bodyParser.json())
+///
 
 app.get('/', function(req, res){
   res.send("hello world")
 })
 
 app.post("/transactions", function(req, res){
-  console.log(req.body.to)
-  console.log(req.body.from)
-  console.log(req.body.amount)
 
+  let to = req.body.to;
+  let from = req.body.from;
+  let amount = req.body.amount;
 
-  res.end
+  // we will be adding the new transaction 
+  let transaction = new Transaction(from, to, amount)
+  
+  transactions.push(transaction)
+
+  res.json(transactions)
+
+  
 })
 
 app.get('/blockchain', function(req, res){
