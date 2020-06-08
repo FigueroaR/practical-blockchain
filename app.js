@@ -9,6 +9,15 @@ app.get('/', function(req, res){
   res.send("hello world")
 })
 
+app.post("/transactions", function(req, res){
+  console.log(req.body.to)
+  console.log(req.body.from)
+  console.log(req.body.amount)
+
+
+  res.end
+})
+
 app.get('/blockchain', function(req, res){
   
 
