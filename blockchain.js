@@ -1,4 +1,4 @@
-let sha256 = require('./js-sha256')
+let sha256 = require('js-sha256')
 
 class Blockchain {
 
@@ -8,7 +8,9 @@ class Blockchain {
   }
 
   addBlock(block) {
+
     if(this.blocks.length == 0) {
+      
       block.previousHash = "0000000000000000"
       block.hash = this.generateHash(block)
     }
