@@ -1,10 +1,10 @@
-class Transaction {
 
-  constructor(from, to , amount) {
+class Transaction {
+  constructor(from,to,amount) {
     this.from = from
-    this.to = to 
+    this.to = to
     this.amount = amount
   }
-
 }
+
 module.exports = Transaction

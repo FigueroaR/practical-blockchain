@@ -1,4 +1,6 @@
+
 class Block {
+
   constructor() {
     this.index = 0
     this.previousHash = ""
@@ -15,6 +17,6 @@ class Block {
     this.transactions.push(transaction)
   }
 
-};
+}
 
-module.exports = Block;
+module.exports = Block

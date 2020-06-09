@@ -1,62 +1,56 @@
-// module(model) imports 
+
 let Block = require('./block')
 let Blockchain = require('./blockchain')
 let BlockchainNode = require('./BlockchainNode')
 let Transaction = require('./transaction')
 
-// npm install  x --save
-//const https = require('https');
 let fetch = require('node-fetch')
+
 const express = require('express')
-const bodyParser = require('body-parser')
-// launching express
 const app = express()
+const bodyParser = require('body-parser')
 
 let port = 3000
 
-//acces the arguments
-process.argv.forEach(function(val,index, array){
-  //console.log(array)
+// access the arguments
+process.argv.forEach(function(val,index,array){
   port = array[2]
 })
 
-if (port == undefined) {
-  port = 3000;
+if(port == undefined) {
+  port = 3000
 }
 
-
-// creating out blockcahin
 let transactions = []
 let nodes = []
 let genesisBlock = new Block()
 let blockchain = new Blockchain(genesisBlock)
-//abobe we have initialized a bloackchain
 
-//body 
 app.use(bodyParser.json())
 
-app.get('/resolve', function(req,res){
-  console.log("/resolve route")
-  nodes.forEach( node => {
-    // console.log("/resolve forEach loop")
-    // console.log(node.url)
-    fetch("http://" + node.url + '/blockchain')
-    .then(function(response){
-      return response.json()
-    })
-    .then(function(otherNodeBlockchain){
-      if(blockchain.blocks.length < otherNodeBlockchain.blocks.length) {
-        blockchain = otherNodeBlockchain
-      }
-      res.send(blockchain)
-    })
-    // .catch(error => { console.error(error) 
-    // })
-  })  
+app.get('/resolve',function(req,res){
+
+  nodes.forEach(function(node){
+
+      fetch(node.url + '/blockchain')
+      .then(function(response){
+        return response.json()
+      })
+      .then(function(otherNodeBlockchain){
+
+          if(blockchain.blocks.length < otherNodeBlockchain.blocks.length) {
+            blockchain = otherNodeBlockchain
+          }
+
+          res.send(blockchain)
+
+      })
+
+  })
+
 })
 
-//noderegister multiplenodes
-app.post('/nodes/register', function(req, res){
+app.post('/nodes/register',function(req,res){
 
   let nodesLists = req.body.urls
   nodesLists.forEach(function(nodeDictionary){
@@ -65,46 +59,48 @@ app.post('/nodes/register', function(req, res){
   })
 
   res.json(nodes)
-  console.log(nodes)
+
 })
 
-
-app.get('/nodes', function(req, res){
+app.get('/nodes',function(req,res){
   res.json(nodes)
 })
 
-app.get('/', function(req, res){
+app.get('/',function(req,res){
   res.send("hello world")
 })
 
-app.get('/mine', function(req, res){
-  // we are mining blocks then returning a block
-  let block = blockchain.getNextBlock(transactions)
-  blockchain.addBlock(block)
+app.get('/mine',function(req,res){
 
-  //we reset the transactions // we dont want to add previous transactions tha are mined and completed
-  transactions = []
-  res.json(block)
+    let block = blockchain.getNextBlock(transactions)
+    blockchain.addBlock(block)
+    transactions = []
+    console.log(transactions)
+    res.json(block)
 })
 
-app.post("/transactions", function(req, res){
-  // in this router we will be posting all the trnsactions
-  let to = req.body.to;
-  let from = req.body.from;
-  let amount = req.body.amount;
+app.post('/transactions',function(req,res){
 
-  // we will be adding the new transaction 
-  let transaction = new Transaction(from, to, amount)
+  console.log(transactions)
+
+  let to = req.body.to
+  let from = req.body.from
+  let amount = req.body.amount
+
+  let transaction = new Transaction(from,to,amount)
+
   transactions.push(transaction)
-  res.json(transactions) // now we polulated transactionS
+
+  res.json(transactions)
+
 })
 
-app.get('/blockchain', function(req, res){
-  // in this route, we then get the complete blockchain
+app.get('/blockchain',function(req,res){
+
   res.json(blockchain)
+
 })
 
-// our localhost is listening
-app.listen(port, function(){
+app.listen(port,function(){
   console.log("server has started")
 })
