@@ -1,15 +1,16 @@
 // module(model) imports 
 let Block = require('./block')
 let Blockchain = require('./blockchain')
+let BlockchainNode = require('./BlockchainNode')
 let Transaction = require('./transaction')
 
 // npm install
 const express = require('express')
 const bodyParser = require('body-parser')
-
+// launching express
+const app = express()
 
 let port = 3000
-
 
 //acces the arguments
 process.argv.forEach(function(val,index, array){
@@ -17,21 +18,38 @@ process.argv.forEach(function(val,index, array){
   port = array[2]
 })
 
-
-
-
-// launching express
-const app = express()
+if (port == undefined) {
+  port = 3000;
+}
 
 
 // creating out blockcahin
 let transactions = []
+let nodes = []
 let genesisBlock = new Block()
 let blockchain = new Blockchain(genesisBlock)
 //abobe we have initialized a bloackchain
 
 //body 
 app.use(bodyParser.json())
+
+//noderegister multiplenodes
+app.post('/nodes/register', function(req, res){
+
+  let nodesLists = req.body.urls
+  nodesLists.forEach(function(nodeDictionary){
+    let node = new BlockchainNode(nodeDictionary["url"])
+    nodes.push(node)
+  })
+
+  res.json(nodes)
+  console.log(nodes)
+})
+
+
+app.get('/nodes', function(req, res){
+  res.json(nodes)
+})
 
 app.get('/', function(req, res){
   res.send("hello world")
@@ -68,20 +86,3 @@ app.listen(port, function(){
 
 
 
-
-
-
-//Dummy data
-// let transaction = new Transaction("Mary", "Jerry", 100)
-
-  // let genesisBlock = new Block();
-  // let blockchain = new Blockchain(genesisBlock)
-
-  // let block = blockchain.getNextBlock([transaction])
-  // blockchain.addBlock(block)
-
-  // let anotherTransaction = new Transaction("Azam", "Jerry", 10)
-  // let block1 = blockchain.getNextBlock([anotherTransaction, transaction])
-  // blockchain. addBlock(block1)
-
-  // res.json(blockchain)
