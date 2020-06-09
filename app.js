@@ -5,7 +5,7 @@ let BlockchainNode = require('./BlockchainNode')
 let Transaction = require('./transaction')
 
 // npm install  x --save
-const https = require('https');
+//const https = require('https');
 let fetch = require('node-fetch')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -36,16 +36,22 @@ let blockchain = new Blockchain(genesisBlock)
 app.use(bodyParser.json())
 
 app.get('/resolve', function(req,res){
-  nodes.forEach(function(node){
-    fetch(https.get(node.url + '/blockchchain'))
+  console.log("/resolve route")
+  nodes.forEach( node => {
+    // console.log("/resolve forEach loop")
+    // console.log(node.url)
+    fetch("http://" + node.url + '/blockchain')
     .then(function(response){
       return response.json()
     })
-    .then(function(blockchain){
-      console.log(blockchain)
-    }).catch(error => {
-      console.error(error)
+    .then(function(otherNodeBlockchain){
+      if(blockchain.blocks.length < otherNodeBlockchain.blocks.length) {
+        blockchain = otherNodeBlockchain
+      }
+      res.send(blockchain)
     })
+    // .catch(error => { console.error(error) 
+    // })
   })  
 })
 
