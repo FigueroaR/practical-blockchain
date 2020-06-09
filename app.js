@@ -4,7 +4,9 @@ let Blockchain = require('./blockchain')
 let BlockchainNode = require('./BlockchainNode')
 let Transaction = require('./transaction')
 
-// npm install
+// npm install  x --save
+const https = require('https');
+let fetch = require('node-fetch')
 const express = require('express')
 const bodyParser = require('body-parser')
 // launching express
@@ -32,6 +34,20 @@ let blockchain = new Blockchain(genesisBlock)
 
 //body 
 app.use(bodyParser.json())
+
+app.get('/resolve', function(req,res){
+  nodes.forEach(function(node){
+    fetch(https.get(node.url + '/blockchchain'))
+    .then(function(response){
+      return response.json()
+    })
+    .then(function(blockchain){
+      console.log(blockchain)
+    }).catch(error => {
+      console.error(error)
+    })
+  })  
+})
 
 //noderegister multiplenodes
 app.post('/nodes/register', function(req, res){
@@ -86,6 +102,3 @@ app.get('/blockchain', function(req, res){
 app.listen(port, function(){
   console.log("server has started")
 })
-
-
-
