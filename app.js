@@ -7,6 +7,19 @@ let Transaction = require('./transaction')
 const express = require('express')
 const bodyParser = require('body-parser')
 
+
+let port = 3000
+
+
+//acces the arguments
+process.argv.forEach(function(val,index, array){
+  //console.log(array)
+  port = array[2]
+})
+
+
+
+
 // launching express
 const app = express()
 
@@ -49,7 +62,7 @@ app.get('/blockchain', function(req, res){
 })
 
 // our localhost is listening
-app.listen(3000, function(){
+app.listen(port, function(){
   console.log("server has started")
 })
 
