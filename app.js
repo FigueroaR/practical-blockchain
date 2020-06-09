@@ -59,6 +59,9 @@ app.get('/mine', function(req, res){
   // we are mining blocks then returning a block
   let block = blockchain.getNextBlock(transactions)
   blockchain.addBlock(block)
+
+  //we reset the transactions // we dont want to add previous transactions tha are mined and completed
+  transactions = []
   res.json(block)
 })
 
