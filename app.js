@@ -5,7 +5,7 @@ let BlockchainNode = require('./BlockchainNode')
 let Transaction = require('./transaction')
 
 // npm install  x --save
-//const https = require('https');
+const sha256 = require('js-sha256');
 let fetch = require('node-fetch')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -89,12 +89,12 @@ app.get('/mine', function(req, res){
 
 app.post("/transactions", function(req, res){
   // in this router we will be posting all the trnsactions
-  let to = req.body.to;
-  let from = req.body.from;
-  let amount = req.body.amount;
+  let driverLicenseNumber = sha256(req.body.driverLicenseNumber)
+  let violationDate = req.body.violationDate;
+  let vioationType = req.body.vioationType;
 
   // we will be adding the new transaction 
-  let transaction = new Transaction(from, to, amount)
+  let transaction = new Transaction(violationDate, driverLicenseNumber, vioationType)
   transactions.push(transaction)
   res.json(transactions) // now we polulated transactionS
 })
