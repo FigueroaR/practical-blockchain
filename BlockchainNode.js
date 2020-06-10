@@ -1,5 +1,3 @@
-
-
 class BlockchainNode {
 
   constructor(url) {

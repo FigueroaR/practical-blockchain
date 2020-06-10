@@ -1,5 +1,3 @@
-
-
 let sha256 = require('js-sha256')
 let Block = require('./block')
 
@@ -49,7 +47,7 @@ class Blockchain {
       while(!hash.startsWith("000")) {
         block.nonce += 1
         hash = sha256(block.key)
-      //console.log(hash)
+        //console.log(hash)
       }
 
       return hash

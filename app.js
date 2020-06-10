@@ -1,13 +1,11 @@
-
 // module(model) imports 
 let Block = require('./block')
 let Blockchain = require('./blockchain')
 let BlockchainNode = require('./BlockchainNode')
 let Transaction = require('./transaction')
 
-
 // npm install  x --save
-let sha256 = require('js-sha256')
+//const https = require('https');
 let fetch = require('node-fetch')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -91,12 +89,12 @@ app.get('/mine', function(req, res){
 
 app.post("/transactions", function(req, res){
   // in this router we will be posting all the trnsactions
-  let driverLicenseNumber = sha(req.body.driverLicenseNumber);
-  let violationDate = req.body.violationDate;
-  let violationType = req.body.violationType;
+  let to = req.body.to;
+  let from = req.body.from;
+  let amount = req.body.amount;
 
   // we will be adding the new transaction 
-  let transaction = new Transaction(driverLicenseNumber, violationDate, violationType)
+  let transaction = new Transaction(from, to, amount)
   transactions.push(transaction)
   res.json(transactions) // now we polulated transactionS
 })
