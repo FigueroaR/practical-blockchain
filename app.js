@@ -1,8 +1,10 @@
-// module(model) imports 
+// module(model/class) imports 
 let Block = require('./block')
 let Blockchain = require('./blockchain')
 let BlockchainNode = require('./BlockchainNode')
 let Transaction = require('./transaction')
+let DrivingRecordSmartContract = require('./smartContracts')
+
 
 // npm install  x --save
 const sha256 = require('js-sha256');
@@ -91,12 +93,15 @@ app.post("/transactions", function(req, res){
   // in this router we will be posting all the trnsactions
   let driverLicenseNumber = sha256(req.body.driverLicenseNumber)
   let violationDate = req.body.violationDate;
-  let vioationType = req.body.vioationType;
-
+  let violationType = req.body.violationType;
+  let drivingRecordSmartContract = new DrivingRecordSmartContract() /// the smart contract 
   // we will be adding the new transaction 
-  let transaction = new Transaction(violationDate, driverLicenseNumber, vioationType)
+  let transaction = new Transaction(driverLicenseNumber, violationDate, violationType)
+
+  drivingRecordSmartContract.apply(transaction, blockchain.blocks)
+
   transactions.push(transaction)
-  res.json(transactions) // now we polulated transactionS
+  res.json(transactions) // now we populated transactionS
 })
 
 app.get('/blockchain', function(req, res){
