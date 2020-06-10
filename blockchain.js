@@ -20,6 +20,24 @@ class Blockchain {
 
   }
 
+  transactionsByDrivingLicenseNumber(drivingLicenseNumber){
+    console.log("first layer")
+    console.log(drivingLicenseNumber)
+      let transactions = []
+      this.blocks.forEach(function(block){
+
+        block.transactions.forEach(function(transaction){
+
+            if(drivingLicenseNumber == transaction.driverLicenseNumber) {
+              transactions.push(transaction)
+            }
+
+        })
+
+    })
+      return transactions
+  }
+
   getNextBlock(transactions) {
 
       let block = new Block()

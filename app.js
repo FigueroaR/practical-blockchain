@@ -89,6 +89,18 @@ app.get('/mine', function(req, res){
   res.json(block)
 })
 
+// driving-records/TX1234
+// driving-records/TCA1234
+// driving-records/NJ1234
+app.get('/driving-records/:drivingLicenseNumber', function(req, res){
+  console.log("we made it")
+  let drivingLicenseNumber = sha256(req.params.drivingLicenseNumber)
+  let transactions = blockchain.transactionsByDrivingLicenseNumber(drivingLicenseNumber)
+  res.json(transactions)
+  console.log("records" + req.params.drivingLicenseNumber, drivingLicenseNumber)
+  console.log(transactions + "log")
+})
+
 app.post("/transactions", function(req, res){
   // in this router we will be posting all the trnsactions
   let driverLicenseNumber = sha256(req.body.driverLicenseNumber)
