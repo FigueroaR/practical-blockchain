@@ -97,7 +97,7 @@ app.get('/driving-records/:drivingLicenseNumber', function(req, res){
   let drivingLicenseNumber = sha256(req.params.drivingLicenseNumber)
   let transactions = blockchain.transactionsByDrivingLicenseNumber(drivingLicenseNumber)
   res.json(transactions)
-  console.log("records" + req.params.drivingLicenseNumber, drivingLicenseNumber)
+  console.log("records" + req.params.drivingLicenseNumber + "DL " +drivingLicenseNumber)
   console.log(transactions + "log")
 })
 

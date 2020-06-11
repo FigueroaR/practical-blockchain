@@ -22,7 +22,7 @@ class Blockchain {
 
   transactionsByDrivingLicenseNumber(drivingLicenseNumber){
     console.log("first layer")
-    console.log(drivingLicenseNumber)
+    console.log("DL " + drivingLicenseNumber)
       let transactions = []
       this.blocks.forEach(function(block){
 
